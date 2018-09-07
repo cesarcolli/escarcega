@@ -11,7 +11,8 @@ class PurchaseRequisition(models.Model):
     x_requestor_id = fields.Many2one(
         'hr.employee',
         string='Solicita',
-        help="Empleado que solicita"
+        help="Empleado que solicita",
+        required=True
     )
 
     x_department_id = fields.Many2one(
@@ -26,7 +27,8 @@ class PurchaseRequisition(models.Model):
     x_approver_id = fields.Many2one(
         'hr.employee',
         string='Autoriza',
-        help="Empleado que autoriza la requisición"
+        help="Empleado que autoriza la requisición",
+        required=True
     )
 
     x_requisition_date = fields.Date(
