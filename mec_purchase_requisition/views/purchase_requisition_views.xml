@@ -18,8 +18,18 @@
         <field name="model">purchase.requisition</field>
         <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_in_progress']" position="attributes">
+                <attribute name="confirm">
+                    ¿Desea confirmar y enviar la requisición? La requisición no podrá modificarse y será enviada al
+                    departamento de compras.
+                </attribute>
+            </xpath>
             <xpath expr="//button[@name='action_open']" position="attributes">
                 <attribute name="groups">purchase.group_purchase_manager</attribute>
+                <attribute name="confirm">
+                    ¿Desea validar la requisición? La requisición será enviada al director para la selección del
+                    proveedor.
+                </attribute>
             </xpath>
             <xpath expr="//button[@name='action_done']" position="attributes">
                 <attribute name="groups">purchase.group_purchase_manager</attribute>
