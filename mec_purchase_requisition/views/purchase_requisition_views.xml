@@ -33,6 +33,9 @@
             </xpath>
             <xpath expr="//button[@name='action_done']" position="attributes">
                  <attribute name="groups">purchase.group_purchase_manager,mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="confirm">
+                    ¿Desea finalizar la requisición?
+                </attribute>
             </xpath>
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="x_requestor_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -53,6 +56,18 @@
                 <field name="x_use_on" placeholder="Describir en que se utilizará"
                        attrs="{'readonly': [('state', '!=', 'draft')]}"/>
             </xpath>
+            <xpath expr="//field[@name='line_ids']//field[@name='product_uom_id']" position="replace">
+                <field name="product_uom_id" readonly="1" />
+            </xpath>
+             <xpath expr="//field[@name='line_ids']//field[@name='price_unit']" position="replace">
+                <field name="price_unit" invisible="1" />
+            </xpath>
+           <!-- <xpath expr="//field[@name='line_ids']//field[@name='product_uom_id']" position="replace">
+                <field name="product_uom_id" groups="base.group_no_one" />
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//field[@name='price_unit']" position="replace">
+                <field name="price_unit" groups="base.group_no_one" />
+            </xpath>-->
             <xpath expr="//field[@name='user_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>

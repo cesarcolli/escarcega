@@ -4,7 +4,7 @@
 
 {
     'name': 'MEC Purchase Requisition',
-    'version': '1.1.0.30',
+    'version': '1.1.0.32',
     'category': 'MEC',
     'description': """
 IQ Purchase Requisition
