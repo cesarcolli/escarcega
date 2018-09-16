@@ -24,15 +24,18 @@
                     departamento de compras.
                 </attribute>
             </xpath>
-            <xpath expr="//button[@name='action_open']" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager</attribute>
-                <attribute name="confirm">
-                    ¿Desea validar la requisición? La requisición será enviada al director para la selección del
-                    proveedor.
-                </attribute>
+            <xpath expr="//button[@name='action_open']" position="replace">
+                <button name="action_open"
+                        states="in_progress"
+                        string="Validar" type="object" class="btn-primary"
+                        confirm="¿Desea validar la requisición? La requisición será enviada al director para la selección del proveedor."
+                        groups="purchase.group_purchase_manager"
+                />
             </xpath>
             <xpath expr="//button[@name='action_done']" position="attributes">
-                 <attribute name="groups">purchase.group_purchase_manager,mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">
+                    purchase.group_purchase_manager,mec_purchase_requisition.group_purchase_oficial
+                </attribute>
                 <attribute name="confirm">
                     ¿Desea finalizar la requisición?
                 </attribute>
@@ -56,17 +59,11 @@
                 <field name="x_use_on" placeholder="Describir en que se utilizará"
                        attrs="{'readonly': [('state', '!=', 'draft')]}"/>
             </xpath>
-            <xpath expr="//field[@name='line_ids']//field[@name='product_uom_id']" position="replace">
-                <field name="product_uom_id" readonly="1" />
+            <xpath expr="//field[@name='line_ids']/form//field[@name='product_uom_id']" position="replace">
+                <field name="product_uom_id" readonly="1"/>
             </xpath>
-             <xpath expr="//field[@name='line_ids']//field[@name='price_unit']" position="replace">
-                <field name="price_unit" invisible="1" />
-            </xpath>
-           <!-- <xpath expr="//field[@name='line_ids']//field[@name='product_uom_id']" position="replace">
-                <field name="product_uom_id" groups="base.group_no_one" />
-            </xpath>
-            <xpath expr="//field[@name='line_ids']//field[@name='price_unit']" position="replace">
-                <field name="price_unit" groups="base.group_no_one" />
+            <!--<xpath expr="//field[@name='line_ids']//field[@name='price_unit']" position="replace">
+                <field name="price_unit" invisible="1"/>
             </xpath>-->
             <xpath expr="//field[@name='user_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -133,16 +130,31 @@
                 <attribute name="groups">purchase.group_purchase_manager</attribute>
             </xpath>
             <xpath expr="//button[@name='print_quotation'][1]" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager, mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">purchase.group_purchase_manager,
+                    mec_purchase_requisition.group_purchase_oficial
+                </attribute>
             </xpath>
             <xpath expr="//button[@name='print_quotation'][2]" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager, mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">purchase.group_purchase_manager,
+                    mec_purchase_requisition.group_purchase_oficial
+                </attribute>
             </xpath>
             <xpath expr="//button[@name='button_confirm'][1]" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager, mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">purchase.group_purchase_manager,
+                    mec_purchase_requisition.group_purchase_oficial
+                </attribute>
             </xpath>
             <xpath expr="//button[@name='button_confirm'][2]" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager, mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">purchase.group_purchase_manager,
+                    mec_purchase_requisition.group_purchase_oficial
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_approve']" position="replace">
+                <button name="button_approve" type="object" states='to approve' string="Aprobar OC"
+                        class="oe_highlight"
+                        groups="mec_purchase_requisition.group_purchase_oficial"
+                        confirm="¿Desea aprobar la orden de compra? La orden se enviará al proveedor."
+                />
             </xpath>
             <xpath expr="//button[@name='action_view_picking']" position="attributes">
                 <attribute name="groups">purchase.group_purchase_manager</attribute>
@@ -151,10 +163,14 @@
                 <attribute name="groups">purchase.group_purchase_manager</attribute>
             </xpath>
             <xpath expr="//button[@name='button_cancel']" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager, mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">purchase.group_purchase_manager,
+                    mec_purchase_requisition.group_purchase_oficial
+                </attribute>
             </xpath>
             <xpath expr="//button[@name='button_done']" position="attributes">
-                <attribute name="groups">purchase.group_purchase_manager, mec_purchase_requisition.group_purchase_oficial</attribute>
+                <attribute name="groups">purchase.group_purchase_manager,
+                    mec_purchase_requisition.group_purchase_oficial
+                </attribute>
             </xpath>
         </field>
     </record>
