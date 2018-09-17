@@ -2,7 +2,8 @@
 # © <2018> <IDEANET (cesarcolli@ideanet.com.mx)>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class PurchaseRequisition(models.Model):
@@ -66,6 +67,12 @@ class PurchaseRequisition(models.Model):
         else:
             self.x_department_id = None
             self.x_approver_id = None
+
+    @api.multi
+    def action_open(self):
+        if not all(obj.purchase_ids for obj in self):
+            raise UserError(_('No se puede validar porque no hay cotizaciones.'))
+        self.write({'state': 'open'})
 
 
 class PurchaseRequisitionLine(models.Model):
@@ -167,3 +174,38 @@ class PurchaseOrder(models.Model):
                 taxes_ids=taxes_ids)
             order_lines.append((0, 0, order_line_values))
         self.order_line = order_lines
+
+    @api.multi
+    def button_confirm(self):
+        for order in self:
+            if order.state not in ['draft', 'sent']:
+                continue
+            self._add_supplier_to_product()
+            # Deal with double validation process
+            if order.company_id.po_double_validation == 'one_step' \
+                    or (order.company_id.po_double_validation == 'two_step' \
+                        and order.amount_total < self.env.user.company_id.currency_id.compute(
+                        order.company_id.po_double_validation_amount, order.currency_id)) \
+                    or order.user_has_groups('purchase.group_purchase_oficial'):
+                order.button_approve()
+            else:
+                order.write({'state': 'to approve'})
+
+        return True
+
+    @api.multi
+    def button_approve(self, force=False):
+        self.write({'state': 'purchase', 'date_approve': fields.Date.context_today(self)})
+        self._create_picking()
+        self.filtered(
+            lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+
+        for po in self:
+            if not po.requisition_id:
+                continue
+            if po.requisition_id.type_id.exclusive == 'exclusive':
+                others_po = po.requisition_id.mapped('purchase_ids').filtered(lambda r: r.id != po.id)
+                others_po.button_cancel()
+                po.requisition_id.action_done()
+
+        return {}

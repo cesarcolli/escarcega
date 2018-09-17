@@ -3,18 +3,18 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
-    'name': 'MEC Purchase Requisition',
-    'version': '1.1.0.32',
+    'name': 'MEC Account',
+    'version': '1.0.0',
     'category': 'MEC',
     'description': """
-IQ Purchase Requisition
+MEC Account invoicing
 ====================================================
     """,
-    'depends': ['purchase_requisition', 'hr'],
+    'depends': ['account'],
     'data': [
-        'security/purchase_requisition.xml',
-        'security/ir.model.access.csv',
-        'views/purchase_requisition_views.xml',
+        "views/account_invoice_views.xml",
+        "security/account_security.xml",
+        "security/ir.model.access.csv"
     ],
     'demo': [],
     'installable': True
