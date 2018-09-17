@@ -82,13 +82,14 @@ class PurchaseRequisitionLine(models.Model):
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
-        super(PurchaseRequisitionLine, self)._onchange_product_id()
-
-        if not self.product_id:
-            self.name = None
-            return
-
-        self.name = self.product_id.display_name
+        if self.product_id:
+            self.product_uom_id = self.product_id.uom_id
+            self.product_qty = 1.0
+            self.name = self.product_id.display_name
+        if not self.account_analytic_id:
+            self.account_analytic_id = self.requisition_id.account_analytic_id
+        if not self.schedule_date:
+            self.schedule_date = self.requisition_id.schedule_date
 
 
 class PurchaseOrder(models.Model):
