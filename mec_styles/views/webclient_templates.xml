@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="less_helpers" name="mec_styles assets backend" inherit_id="web_enterprise.less_helpers">
+        <xpath expr="//link[@href='/web_enterprise/static/src/less/variables.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/mec_styles/static/src/less/variables.less"/>
+        </xpath>
+    </template>
+    <template id="assets_backend" name="mec_styles assets backend" inherit_id="web_enterprise.assets_backend">
+        <xpath expr="//link[@href='/web_enterprise/static/src/less/app_switcher.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/mec_styles/static/src/less/app_switcher.less"/>
+        </xpath>
+        <xpath expr="//link[@href='/web_enterprise/static/src/less/webclient.less']" position="replace">
+            <link rel="stylesheet" type="text/less" href="/mec_styles/static/src/less/webclient.less"/>
+        </xpath>
+    </template>
+
+</odoo>

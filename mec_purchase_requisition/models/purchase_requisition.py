@@ -82,13 +82,14 @@ class PurchaseRequisitionLine(models.Model):
 
     @api.onchange('product_id')
     def _onchange_product_id(self):
-        super(PurchaseRequisitionLine, self)._onchange_product_id()
-
-        if not self.product_id:
-            self.name = None
-            return
-
-        self.name = self.product_id.display_name
+        if self.product_id:
+            self.product_uom_id = self.product_id.uom_id
+            self.product_qty = 1.0
+            self.name = self.product_id.display_name
+        if not self.account_analytic_id:
+            self.account_analytic_id = self.requisition_id.account_analytic_id
+        if not self.schedule_date:
+            self.schedule_date = self.requisition_id.schedule_date
 
 
 class PurchaseOrder(models.Model):
@@ -153,13 +154,8 @@ class PurchaseOrder(models.Model):
                 taxes_ids = line.product_id.supplier_taxes_id.filtered(
                     lambda tax: tax.company_id == requisition.company_id).ids
 
-            # Compute quantity and price_unit
-            if line.product_uom_id != line.product_id.uom_po_id:
-                product_qty = line.product_uom_id._compute_quantity(line.product_qty, line.product_id.uom_po_id)
-                price_unit = line.product_uom_id._compute_price(line.price_unit, line.product_id.uom_po_id)
-            else:
-                product_qty = line.product_qty
-                price_unit = line.price_unit
+            product_qty = line.product_qty
+            price_unit = line.price_unit
 
             if requisition.type_id.quantity_copy != 'copy':
                 product_qty = 0
